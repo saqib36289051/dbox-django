@@ -1,6 +1,4 @@
 from rest_framework import serializers
-import re
-
 class UserSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()

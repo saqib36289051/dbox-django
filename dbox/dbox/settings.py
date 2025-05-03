@@ -59,15 +59,22 @@ MIDDLEWARE = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'dbox.custom_auth.CustomJWTAuthentication',
     )
 }
 
 SIMPLE_JWT = {
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
     "BLACKLIST_AFTER_ROTATION": True,
     "ACCESS_TOKEN_LIFETIME": timedelta(days=3),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
 }
+
+AUTHENTICATION_BACKENDS = [
+    'dbox.auth_backends.MongoDBAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',  # Keep the default backend
+]
 
 ROOT_URLCONF = 'dbox.urls'
 

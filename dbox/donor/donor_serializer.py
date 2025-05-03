@@ -1,13 +1,14 @@
 from rest_framework import serializers
+from django.core.validators import RegexValidator
 
 class DonorSerializer(serializers.Serializer):
     mobile_number = serializers.CharField(
         min_length=11,
         max_length=11,
         validators=[
-            serializers.RegexField(
+            RegexValidator(
                 regex=r'^\d{11}$',
-                error_messages={'invalid': 'Phone number must be 11 digits'}
+                message={'invalid': 'Phone number must be 11 digits'}
             )
         ]
     )

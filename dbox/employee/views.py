@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from .db_config import get_db
-from .user_serializer import UserSerializer
+from .auth_serializer import UserSerializer
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -12,7 +12,10 @@ class RegisterUser(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-       data = request.data
+       serializer = UserSerializer(data=request.data)
+       if not serializer.is_valid():
+           return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+       data = serializer.validated_data
        db = get_db()
        if db.users.find_one({"phone_number": data["phone_number"]}):
            return Response({"error": "Phone number already exists"}, status=status.HTTP_400_BAD_REQUEST)

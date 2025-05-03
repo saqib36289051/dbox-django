@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # custom apps
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'employee',
 ]
 
@@ -62,6 +63,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
+    "BLACKLIST_AFTER_ROTATION": True,
     "ACCESS_TOKEN_LIFETIME": timedelta(days=3),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
 }

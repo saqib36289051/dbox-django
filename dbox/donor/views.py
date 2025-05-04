@@ -25,6 +25,9 @@ class DonorListCreateView(APIView):
             db = get_db()
             donor_data = serializer.validated_data
             
+            if db.donors.find_one({"mobile_number": donor_data["mobile_number"]}):
+                return Response({"error": "User with this mobile number already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            
             employee_id = str(request.user.id)
             donor_data["employee_id"] = employee_id
             
@@ -32,7 +35,10 @@ class DonorListCreateView(APIView):
             
             response_data = donor_data.copy()
             response_data["_id"] = str(result.inserted_id)
-            return Response({"message": "Donor created successfully"}, status=status.HTTP_201_CREATED)
+            return Response({
+                "message": "Donor created successfully",
+                "data": response_data
+                             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class DonorRetrieveUpdateDestroyView(APIView):

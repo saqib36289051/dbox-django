@@ -6,5 +6,8 @@ class MongoUser:
         # Add other required attributes for JWT token
         self.is_active = True
         
+    @property
+    def is_authenticated(self):
+        return True        
     def __str__(self):
         return self.username
